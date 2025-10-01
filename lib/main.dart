@@ -1,5 +1,4 @@
-import 'dart:ffi';
-
+import 'package:block_demo/screens/isolate_screen.dart';
 import 'package:block_demo/screens/video_player_screen.dart';
 import 'package:block_demo/widget/hero_layout_card.dart';
 import 'package:flutter/cupertino.dart' hide ImageInfo;
@@ -68,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                _isolate(),
                 _tween(),
                 _listGenerate(),
                 _videoPlayer(),
@@ -84,6 +84,25 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  /// ---------- Isolate ---------- ///
+
+  Widget _isolate() {
+    return ReusableContainer(
+      title: "Isolate",
+      widget: CupertinoButton.filled(
+        child: Text("Isolate Screen"),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (context) => const IsolateScreen(),
+            ),
+          );
+        },
       ),
     );
   }
@@ -139,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
 
   Widget _videoPlayer() {
     return ReusableContainer(
-      title: "Video Player",
+      title: "Video Player Screen",
       widget: CupertinoButton.filled(
         child: Text("Video Player"),
         onPressed: () {
