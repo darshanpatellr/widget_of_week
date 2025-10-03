@@ -5,8 +5,8 @@ import 'package:block_demo/widget/hero_layout_card.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart' hide ImageInfo;
 import 'package:flutter/material.dart' hide ImageInfo;
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:home_widget/home_widget.dart';
-
 
 import 'widget/reusable_container.dart';
 
@@ -84,6 +84,8 @@ class _HomeScreenState extends State<HomeScreen>
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                _rawMagnifier(),
+                _flutterAnimate(),
                 _draggable(),
                 _homeWidget(),
                 _flChart(),
@@ -107,6 +109,95 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ],
         ),
+        bottomNavigationBar: _bottomNavigation(),
+      ),
+    );
+  }
+
+  /// ---------- Bottom Navigation ---------- ///
+
+  Widget _bottomNavigation(){
+
+     var currentPageIndex = 0;
+
+    return NavigationBar(
+      animationDuration: const Duration(milliseconds: 1000),
+      destinations: [
+        NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+        NavigationDestination(icon: Icon(Icons.explore), label: 'Explore'),
+        NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
+        NavigationDestination(
+          icon: Icon(Icons.settings_rounded),
+          label: 'Settings',
+        ),
+      ],
+      onDestinationSelected: (int index) {
+        setState(() {
+          currentPageIndex = index;
+        });
+      },
+      selectedIndex: currentPageIndex,
+    );
+   }
+
+  /// ---------- RawMagnifier ---------- ///
+
+  static const double magnifierRadius = 50.0;
+  Offset dragGesturePosition = const Offset(100, 100);
+
+  Widget _rawMagnifier() {
+    return ReusableContainer(
+      title: "RawMagnifier",
+      widget: Stack(
+        children: <Widget>[
+          GestureDetector(
+            onPanUpdate: (DragUpdateDetails details) => setState(() {
+              dragGesturePosition = details.localPosition;
+            }),
+            onPanDown: (DragDownDetails details) => setState(() {
+              dragGesturePosition = details.localPosition;
+            }),
+            child: RawMagnifier(
+              size: Size(150, 150),
+              decoration: MagnifierDecoration(),
+              focalPointOffset: Offset.zero,
+              magnificationScale: 1,
+              child: Text("sgadjgkafkadfvkajhfdvajhsdvjh"),
+            ),
+          ),
+          Positioned(
+            left: dragGesturePosition.dx - magnifierRadius,
+            top: dragGesturePosition.dy - magnifierRadius,
+            child: const RawMagnifier(
+              decoration: MagnifierDecoration(
+                shape: CircleBorder(
+                  side: BorderSide(color: Colors.pink, width: 3),
+                ),
+              ),
+              size: Size(magnifierRadius * 2, magnifierRadius * 2),
+              magnificationScale: 2,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// ---------- Flutter Animate ---------- ///
+
+  Widget _flutterAnimate() {
+    return ReusableContainer(
+      title: "Flutter Animate",
+      widget: Animate(
+        // effects: [FadeEffect(),SlideEffect()],
+        child: Text("Flutter Animate", style: TextStyle(fontSize: 18))
+            .animate()
+            .fade(duration: 2000.ms)
+            // .fade()
+            .tint(color: CupertinoColors.activeOrange)
+            .slide(curve: Curves.easeIn)
+            .then()
+            .shake(duration: 750.ms),
       ),
     );
   }
@@ -143,14 +234,16 @@ class _HomeScreenState extends State<HomeScreen>
     -> and a <receiver> entry added to AndroidManifest.xml.
    */
 
-  String androidWidgetName = 'NewsWidget'; // must match your AppWidgetProvider class name
+  String androidWidgetName =
+      'NewsWidget'; // must match your AppWidgetProvider class name
 
   void updateHeadline(String title, String description) async {
     await HomeWidget.saveWidgetData<String>('headline_title', title);
-    await HomeWidget.saveWidgetData<String>('headline_description', description);
-    await HomeWidget.updateWidget(
-      androidName: androidWidgetName,
+    await HomeWidget.saveWidgetData<String>(
+      'headline_description',
+      description,
     );
+    await HomeWidget.updateWidget(androidName: androidWidgetName);
   }
 
   Widget _homeWidget() {
@@ -159,9 +252,12 @@ class _HomeScreenState extends State<HomeScreen>
       title: "home_widget",
       widget: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: CupertinoButton.filled(child: Text("Home Widget Data Change"), onPressed: (){
-          updateHeadline("Headline Title", "Headline Description");
-        }),
+        child: CupertinoButton.filled(
+          child: Text("Home Widget Data Change"),
+          onPressed: () {
+            updateHeadline("Headline Title", "Headline Description");
+          },
+        ),
       ),
     );
   }
@@ -187,29 +283,29 @@ class _HomeScreenState extends State<HomeScreen>
                       titleStyle: TextStyle(fontSize: 16, color: Colors.white),
                       showTitle: true,
                       radius: 50,
-                      color: CupertinoColors.activeBlue
+                      color: CupertinoColors.activeBlue,
                     ),
                     PieChartSectionData(
-                        value: 20,
-                        title: "Food",
-                        titleStyle: TextStyle(fontSize: 16, color: Colors.white),
-                        showTitle: true,
-                        radius: 50,
-                        color: CupertinoColors.activeGreen
+                      value: 20,
+                      title: "Food",
+                      titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+                      showTitle: true,
+                      radius: 50,
+                      color: CupertinoColors.activeGreen,
                     ),
                     PieChartSectionData(
-                        value: 10,
-                        title: "Fun",
-                        titleStyle: TextStyle(fontSize: 16, color: Colors.white),
-                        showTitle: true,
-                        radius: 50,
-                        color: CupertinoColors.activeOrange
-                    )
-                  ]
-                )
+                      value: 10,
+                      title: "Fun",
+                      titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+                      showTitle: true,
+                      radius: 50,
+                      color: CupertinoColors.activeOrange,
+                    ),
+                  ],
+                ),
               ),
             ),
-            SizedBox(width: 10,),
+            SizedBox(width: 10),
             SizedBox(
               height: 200,
               width: 250,
@@ -221,13 +317,19 @@ class _HomeScreenState extends State<HomeScreen>
                   maxY: 80,
                   lineBarsData: [
                     LineChartBarData(
-                      spots: [FlSpot(0,10),FlSpot(10,5),FlSpot(15,25),FlSpot(20,40),FlSpot(25,50)],
+                      spots: [
+                        FlSpot(0, 10),
+                        FlSpot(10, 5),
+                        FlSpot(15, 25),
+                        FlSpot(20, 40),
+                        FlSpot(25, 50),
+                      ],
                       color: CupertinoColors.activeGreen,
                       barWidth: 2,
-                      isCurved: true
-                    )
-                  ]
-                )
+                      isCurved: true,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -284,8 +386,7 @@ class _HomeScreenState extends State<HomeScreen>
           DropdownMenuEntry(value: Colors.purple, label: "Purple"),
         ],
         onSelected: (color) {
-          if (color != null) {
-          }
+          if (color != null) {}
         },
       ),
     );
