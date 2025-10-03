@@ -67,7 +67,8 @@ class _HomeScreenState extends State<HomeScreen>
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
-                segmentedButton(),
+                _dropdownMenu(),
+                _segmentedButton(),
                 _isolate(),
                 _tween(),
                 _listGenerate(),
@@ -89,6 +90,37 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  /// ---------- Dropdown Menu ---------- ///
+
+  late Color _themeColorDropDown;
+
+  Widget _dropdownMenu() {
+    return ReusableContainer(
+      title: "Dropdown Menu",
+      widget: DropdownMenu(
+        width: double.infinity,
+        enableFilter: true,
+        requestFocusOnTap: true,
+        helperText: "Choose Color",
+        label: Text("Select Color"),
+        dropdownMenuEntries: <DropdownMenuEntry<Color>>[
+          DropdownMenuEntry(value: Colors.red, label: "Red"),
+          DropdownMenuEntry(value: Colors.green, label: "Green"),
+          DropdownMenuEntry(value: Colors.blue, label: "Blue"),
+          DropdownMenuEntry(value: Colors.yellow, label: "Yellow"),
+          DropdownMenuEntry(value: Colors.purple, label: "Purple"),
+        ],
+        onSelected: (color) {
+          if (color != null) {
+            setState(() {
+              _themeColorDropDown = color;
+            });
+          }
+        },
+      ),
+    );
+  }
+
   /// ---------- Segmented Button ---------- ///
 
   Set<String> _selectedSegment = {'Part A'};
@@ -99,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  Widget segmentedButton() {
+  Widget _segmentedButton() {
     return ReusableContainer(
       title: "Segmented Button",
       widget: SizedBox(
@@ -112,8 +144,10 @@ class _HomeScreenState extends State<HomeScreen>
             backgroundColor: CupertinoColors.white,
             foregroundColor: CupertinoColors.black,
             selectedForegroundColor: CupertinoColors.activeBlue,
-            selectedBackgroundColor: CupertinoColors.systemTeal.withValues(alpha: 0.3),
-            side: BorderSide(color: CupertinoColors.activeBlue)
+            selectedBackgroundColor: CupertinoColors.systemTeal.withValues(
+              alpha: 0.3,
+            ),
+            side: BorderSide(color: CupertinoColors.activeBlue),
           ),
           segments: <ButtonSegment<String>>[
             ButtonSegment<String>(
