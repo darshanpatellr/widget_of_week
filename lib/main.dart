@@ -67,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen>
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                _overlayPortal(),
                 _dropdownMenu(),
                 _segmentedButton(),
                 _isolate(),
@@ -86,6 +87,35 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  /// ---------- Overlay Portal ---------- ///
+
+  var _overlayPortalController = OverlayPortalController();
+
+  Widget _overlayPortal() {
+    return ReusableContainer(
+      title: "Overlay Portal",
+      widget: CupertinoButton.filled(
+        child: OverlayPortal(
+          controller: _overlayPortalController,
+          overlayChildBuilder: (BuildContext context) {
+            return Positioned(
+              top: 56,
+              right: 20,
+              child: Text(
+                "I'm overlay!!",
+                style: TextStyle(fontSize: 20, color: CupertinoColors.black),
+              ),
+            );
+          },
+          child: Text("Press Click"),
+        ),
+        onPressed: () {
+          _overlayPortalController.toggle();
+        },
       ),
     );
   }
