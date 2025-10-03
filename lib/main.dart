@@ -165,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   /// ---------- Overlay Portal ---------- ///
 
-  var _overlayPortalController = OverlayPortalController();
+  final _overlayPortalController = OverlayPortalController();
 
   Widget _overlayPortal() {
     return ReusableContainer(
@@ -194,8 +194,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   /// ---------- Dropdown Menu ---------- ///
 
-  late Color _themeColorDropDown;
-
   Widget _dropdownMenu() {
     return ReusableContainer(
       title: "Dropdown Menu",
@@ -214,9 +212,6 @@ class _HomeScreenState extends State<HomeScreen>
         ],
         onSelected: (color) {
           if (color != null) {
-            setState(() {
-              _themeColorDropDown = color;
-            });
           }
         },
       ),
