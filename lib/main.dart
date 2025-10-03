@@ -1,3 +1,4 @@
+import 'package:block_demo/screens/draggable_screen.dart';
 import 'package:block_demo/screens/isolate_screen.dart';
 import 'package:block_demo/screens/video_player_screen.dart';
 import 'package:block_demo/widget/hero_layout_card.dart';
@@ -83,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen>
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                _draggable(),
                 _homeWidget(),
                 _flChart(),
                 _overlayPortal(),
@@ -105,6 +107,25 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  /// ---------- Draggable ---------- ///
+
+  Widget _draggable() {
+    return ReusableContainer(
+      title: "Draggable",
+      widget: CupertinoButton.filled(
+        child: Text("Draggable Screen"),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (context) => const DraggableScreen(),
+            ),
+          );
+        },
       ),
     );
   }
