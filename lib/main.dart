@@ -36,8 +36,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderStateMixin {
-
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   @override
   void initState() {
     _initTweenAnimation();
@@ -67,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                segmentedButton(),
                 _isolate(),
                 _tween(),
                 _listGenerate(),
@@ -79,8 +80,56 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
                 _cupertinoSlidingSegment(),
                 _cupertinoSheetRoute(),
                 _cupertinoRadio(),
-                SizedBox(height: 56,)
+                SizedBox(height: 56),
               ]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// ---------- Segmented Button ---------- ///
+
+  Set<String> _selectedSegment = {'Part A'};
+
+  void updateSegmentSelection(Set<String> newSelection) {
+    setState(() {
+      _selectedSegment = newSelection;
+    });
+  }
+
+  Widget segmentedButton() {
+    return ReusableContainer(
+      title: "Segmented Button",
+      widget: SizedBox(
+        width: double.infinity,
+        child: SegmentedButton(
+          selected: _selectedSegment,
+          onSelectionChanged: updateSegmentSelection,
+          multiSelectionEnabled: false,
+          style: SegmentedButton.styleFrom(
+            backgroundColor: CupertinoColors.white,
+            foregroundColor: CupertinoColors.black,
+            selectedForegroundColor: CupertinoColors.activeBlue,
+            selectedBackgroundColor: CupertinoColors.systemTeal.withValues(alpha: 0.3),
+            side: BorderSide(color: CupertinoColors.activeBlue)
+          ),
+          segments: <ButtonSegment<String>>[
+            ButtonSegment<String>(
+              value: 'Part A',
+              label: Text('Part A'),
+              icon: Icon(CupertinoIcons.circle_grid_hex),
+            ),
+            ButtonSegment<String>(
+              value: 'Part B',
+              label: Text('Part B'),
+              icon: Icon(CupertinoIcons.circle_grid_3x3),
+            ),
+            ButtonSegment<String>(
+              value: 'Part C',
+              label: Text('Part C'),
+              icon: Icon(CupertinoIcons.square_grid_2x2),
             ),
           ],
         ),
@@ -112,16 +161,13 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
   late AnimationController _controllerAnimation;
   late Animation<double> textSizeAnimation;
 
-  void _initTweenAnimation(){
+  void _initTweenAnimation() {
     _controllerAnimation = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
     );
 
-    textSizeAnimation = Tween<double>(
-      begin: 12.0,
-      end: 16.0,
-    ).animate(
+    textSizeAnimation = Tween<double>(begin: 12.0, end: 16.0).animate(
       CurvedAnimation(parent: _controllerAnimation, curve: Curves.linear),
     );
 
@@ -135,7 +181,10 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
       builder: (BuildContext context, Widget? child) {
         return ReusableContainer(
           title: "Tween",
-          widget: Text("Tween",style: TextStyle(fontSize: textSizeAnimation.value),),
+          widget: Text(
+            "Tween",
+            style: TextStyle(fontSize: textSizeAnimation.value),
+          ),
         );
       },
     );
