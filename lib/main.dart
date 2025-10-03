@@ -4,11 +4,26 @@ import 'package:block_demo/widget/hero_layout_card.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart' hide ImageInfo;
 import 'package:flutter/material.dart' hide ImageInfo;
+import 'package:home_widget/home_widget.dart';
+
 
 import 'widget/reusable_container.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  HomeWidget.registerBackgroundCallback(backgroundCallback);
   runApp(const MyApp());
+}
+
+Future<void> backgroundCallback(Uri? uri) async {
+  // Called when the widget fires an intent configured to call back to Dart.
+  // parse uri and perform action
+  print("backgroundCallback uri : ${uri}");
+  if (uri?.host == 'headlineClicked') {
+    // For example: open the app, or log analytics
+    debugPrint("Widget headline clicked!");
+    // You could also store state or send a notification
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -68,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen>
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                _homeWidget(),
                 _flChart(),
                 _overlayPortal(),
                 _dropdownMenu(),
@@ -89,6 +105,42 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  /// ---------- home_widget ---------- ///
+  /// https://chatgpt.com/share/68df91c6-36cc-8007-8654-d97d1a64e76e
+  /*
+  Create the native widget boilerplate
+    Open the Android module in Android Studio (right-click android/ → Open in Android Studio).
+    Then: Right click app → New → Widget → App Widget. Fill the dialog (e.g. Class name NewsWidget, min width 3 cells, min height 3 cells). Android Studio will create:
+
+    -> res/layout/news_widget.xml (the widget UI),
+    -> res/xml/news_widget_info.xml (the appwidget-provider metadata),
+    -> a Kotlin (or Java) NewsWidget.kt (extends AppWidgetProvider),
+    -> and a <receiver> entry added to AndroidManifest.xml.
+   */
+
+  String androidWidgetName = 'NewsWidget'; // must match your AppWidgetProvider class name
+
+  void updateHeadline(String title, String description) async {
+    await HomeWidget.saveWidgetData<String>('headline_title', title);
+    await HomeWidget.saveWidgetData<String>('headline_description', description);
+    await HomeWidget.updateWidget(
+      androidName: androidWidgetName,
+    );
+  }
+
+  Widget _homeWidget() {
+    // https://chatgpt.com/share/68df91c6-36cc-8007-8654-d97d1a64e76e
+    return ReusableContainer(
+      title: "home_widget",
+      widget: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: CupertinoButton.filled(child: Text("Home Widget Data Change"), onPressed: (){
+          updateHeadline("Headline Title", "Headline Description");
+        }),
       ),
     );
   }
