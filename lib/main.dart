@@ -1,6 +1,7 @@
 import 'package:block_demo/screens/isolate_screen.dart';
 import 'package:block_demo/screens/video_player_screen.dart';
 import 'package:block_demo/widget/hero_layout_card.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart' hide ImageInfo;
 import 'package:flutter/material.dart' hide ImageInfo;
 
@@ -67,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen>
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                _flChart(),
                 _overlayPortal(),
                 _dropdownMenu(),
                 _segmentedButton(),
@@ -84,6 +86,76 @@ class _HomeScreenState extends State<HomeScreen>
                 _cupertinoRadio(),
                 SizedBox(height: 56),
               ]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// ---------- fl_chart ---------- ///
+
+  Widget _flChart() {
+    return ReusableContainer(
+      title: "fl chart",
+      widget: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            SizedBox(
+              height: 200,
+              width: 200,
+              child: PieChart(
+                PieChartData(
+                  sections: [
+                    PieChartSectionData(
+                      value: 10,
+                      title: "Internet",
+                      titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+                      showTitle: true,
+                      radius: 50,
+                      color: CupertinoColors.activeBlue
+                    ),
+                    PieChartSectionData(
+                        value: 20,
+                        title: "Food",
+                        titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+                        showTitle: true,
+                        radius: 50,
+                        color: CupertinoColors.activeGreen
+                    ),
+                    PieChartSectionData(
+                        value: 10,
+                        title: "Fun",
+                        titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+                        showTitle: true,
+                        radius: 50,
+                        color: CupertinoColors.activeOrange
+                    )
+                  ]
+                )
+              ),
+            ),
+            SizedBox(width: 10,),
+            SizedBox(
+              height: 200,
+              width: 250,
+              child: LineChart(
+                LineChartData(
+                  minY: 0,
+                  maxX: 80,
+                  minX: 0,
+                  maxY: 80,
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: [FlSpot(0,10),FlSpot(10,5),FlSpot(15,25),FlSpot(20,40),FlSpot(25,50)],
+                      color: CupertinoColors.activeGreen,
+                      barWidth: 2,
+                      isCurved: true
+                    )
+                  ]
+                )
+              ),
             ),
           ],
         ),
