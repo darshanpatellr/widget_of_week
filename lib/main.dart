@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:block_demo/screens/draggable_screen.dart';
 import 'package:block_demo/screens/isolate_screen.dart';
 import 'package:block_demo/screens/video_player_screen.dart';
@@ -84,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen>
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                _linearGradient(),
                 _rawMagnifier(),
                 _flutterAnimate(),
                 _draggable(),
@@ -110,6 +113,50 @@ class _HomeScreenState extends State<HomeScreen>
           ],
         ),
         bottomNavigationBar: _bottomNavigation(),
+      ),
+    );
+  }
+
+  /// ---------- LinearGradient ---------- ///
+
+  Widget _linearGradient() {
+    return ReusableContainer(
+      title: "Linear Gradient",
+      widget: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 150,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [
+                      CupertinoColors.activeBlue,
+                      CupertinoColors.systemTeal,
+                      CupertinoColors.systemPurple,
+                      CupertinoColors.destructiveRed,
+                      CupertinoColors.activeOrange,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomRight,
+                    transform: GradientRotation(math.pi / 2)
+                )
+            ),
+          ),
+          SizedBox(height: 12,),
+          ShaderMask(shaderCallback: (bounds) =>
+              LinearGradient(colors: [
+                CupertinoColors.activeBlue,
+                CupertinoColors.systemTeal,
+                CupertinoColors.systemPurple,
+                CupertinoColors.destructiveRed,
+                CupertinoColors.activeOrange,
+              ]).createShader(bounds),
+            child:  Text("Hello Flutter!!",
+              style: TextStyle(
+                  color: CupertinoColors.white,
+                  fontSize: 22, fontWeight: FontWeight.bold),),
+          )
+        ],
       ),
     );
   }
