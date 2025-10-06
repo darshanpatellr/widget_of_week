@@ -86,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen>
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                _autocomplete(),
                 _linearGradient(),
                 _rawMagnifier(),
                 _flutterAnimate(),
@@ -117,6 +118,31 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  /// ---------- Auto Complete ---------- ///
+
+  static const List<String> _kOptions = <String>[
+    'darpan',
+    'jaimin',
+    'manthan',
+    'darshan',
+  ];
+
+  Widget _autocomplete() {
+    return ReusableContainer(
+      title: "Autocomplete(Text)",
+      widget: Autocomplete<String>(
+        optionsBuilder: (TextEditingValue textEditingValue) {
+          if (textEditingValue.text == '') {
+            return const Iterable<String>.empty();
+          }
+          return _kOptions.where((String option) {
+            return option.contains(textEditingValue.text.toLowerCase());
+          });
+        },
+      ),
+    );
+  }
+
   /// ---------- LinearGradient ---------- ///
 
   Widget _linearGradient() {
@@ -128,34 +154,40 @@ class _HomeScreenState extends State<HomeScreen>
           Container(
             height: 150,
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [
-                      CupertinoColors.activeBlue,
-                      CupertinoColors.systemTeal,
-                      CupertinoColors.systemPurple,
-                      CupertinoColors.destructiveRed,
-                      CupertinoColors.activeOrange,
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomRight,
-                    transform: GradientRotation(math.pi / 2)
-                )
+              gradient: LinearGradient(
+                colors: [
+                  CupertinoColors.activeBlue,
+                  CupertinoColors.systemTeal,
+                  CupertinoColors.systemPurple,
+                  CupertinoColors.destructiveRed,
+                  CupertinoColors.activeOrange,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomRight,
+                transform: GradientRotation(math.pi / 2),
+              ),
             ),
           ),
-          SizedBox(height: 12,),
-          ShaderMask(shaderCallback: (bounds) =>
-              LinearGradient(colors: [
+          SizedBox(height: 12),
+          ShaderMask(
+            shaderCallback: (bounds) => LinearGradient(
+              colors: [
                 CupertinoColors.activeBlue,
                 CupertinoColors.systemTeal,
                 CupertinoColors.systemPurple,
                 CupertinoColors.destructiveRed,
                 CupertinoColors.activeOrange,
-              ]).createShader(bounds),
-            child:  Text("Hello Flutter!!",
+              ],
+            ).createShader(bounds),
+            child: Text(
+              "Hello Flutter!!",
               style: TextStyle(
-                  color: CupertinoColors.white,
-                  fontSize: 22, fontWeight: FontWeight.bold),),
-          )
+                color: CupertinoColors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -163,9 +195,8 @@ class _HomeScreenState extends State<HomeScreen>
 
   /// ---------- Bottom Navigation ---------- ///
 
-  Widget _bottomNavigation(){
-
-     var currentPageIndex = 0;
+  Widget _bottomNavigation() {
+    var currentPageIndex = 0;
 
     return NavigationBar(
       animationDuration: const Duration(milliseconds: 1000),
@@ -185,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen>
       },
       selectedIndex: currentPageIndex,
     );
-   }
+  }
 
   /// ---------- RawMagnifier ---------- ///
 
