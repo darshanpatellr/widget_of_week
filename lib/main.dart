@@ -56,16 +56,17 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
+    _controllerTabPage = TabController(length: _numDots, vsync: this);
     _initTweenAnimation();
     super.initState();
   }
 
   @override
   void dispose() {
+    _controllerTabPage.dispose();
     controllerCarousel.dispose();
     _controllerAnimation.dispose();
     super.dispose();
@@ -87,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen>
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                _tabPageSelector(),
                 _navigationRail(),
                 _autocomplete(),
                 _linearGradient(),
@@ -120,6 +122,41 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  /// ---------- TabPageSelector ---------- ///
+
+  final int _numDots = 3;
+  late final TabController _controllerTabPage;
+
+  void _incrementTabCounter() {
+    setState(() {
+      (_controllerTabPage.index == _numDots - 1)
+          ? _controllerTabPage.index = 0
+          : _controllerTabPage.index++;
+    });
+  }
+
+  Widget _tabPageSelector() {
+    return ReusableContainer(
+      title: "TabPageSelector",
+      widget: Column(
+        children: [
+          TabPageSelector(
+            controller: _controllerTabPage,
+            indicatorSize: 16,
+            selectedColor: CupertinoColors.activeGreen,
+          ),
+          SizedBox(height: 12),
+          CupertinoButton.filled(
+            child: Text("Next Tab"),
+            onPressed: () {
+              _incrementTabCounter();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   /// ---------- Navigation Rail ---------- ///
 
   Widget _navigationRail() {
@@ -135,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           );
         },
-      )
+      ),
     );
   }
 

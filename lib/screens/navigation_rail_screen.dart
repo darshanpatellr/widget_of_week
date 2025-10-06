@@ -33,8 +33,8 @@ class _NavigationRailScreenState extends State<NavigationRailScreen> {
               destinations: <NavigationRailDestination>[
                 NavigationRailDestination(
                   icon: Badge(
-                      label: Text("47"),
-                      child: Icon(CupertinoIcons.home)
+                    label: Text("47"),
+                    child: Icon(CupertinoIcons.home),
                   ),
                   label: Text("Home"),
                 ),
