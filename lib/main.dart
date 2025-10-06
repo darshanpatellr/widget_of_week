@@ -10,6 +10,7 @@ import 'package:flutter/material.dart' hide ImageInfo;
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:home_widget/home_widget.dart';
 
+import 'screens/navigation_rail_screen.dart';
 import 'widget/reusable_container.dart';
 
 void main() {
@@ -86,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen>
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                _navigationRail(),
                 _autocomplete(),
                 _linearGradient(),
                 _rawMagnifier(),
@@ -115,6 +117,25 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         bottomNavigationBar: _bottomNavigation(),
       ),
+    );
+  }
+
+  /// ---------- Navigation Rail ---------- ///
+
+  Widget _navigationRail() {
+    return ReusableContainer(
+      title: "Navigation Rail",
+      widget: CupertinoButton.filled(
+        child: Text("NavigationRail Screen"),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (context) => const NavigationRailScreen(),
+            ),
+          );
+        },
+      )
     );
   }
 
