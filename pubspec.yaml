@@ -39,6 +39,7 @@ dependencies:
   fl_chart: ^1.1.1
   home_widget: ^0.8.0
   flutter_animate: ^4.5.2
+  font_awesome_flutter: ^10.10.0
 
 dev_dependencies:
   flutter_test:

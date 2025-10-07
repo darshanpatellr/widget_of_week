@@ -8,6 +8,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart' hide ImageInfo;
 import 'package:flutter/material.dart' hide ImageInfo;
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:home_widget/home_widget.dart';
 
 import 'screens/navigation_rail_screen.dart';
@@ -88,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             CupertinoSliverNavigationBar(largeTitle: Text("Cupertino")),
             SliverList(
               delegate: SliverChildListDelegate([
+                _fontAwesomeFlutter(),
                 _tabPageSelector(),
                 _navigationRail(),
                 _autocomplete(),
@@ -118,6 +120,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ],
         ),
         bottomNavigationBar: _bottomNavigation(),
+      ),
+    );
+  }
+
+  /// ---------- font awesome flutter ---------- ///
+
+  Widget _fontAwesomeFlutter() {
+    return ReusableContainer(
+      title: "Font Awesome Flutter",
+      widget: IconButton(
+        onPressed: () {},
+        icon: FaIcon(
+          FontAwesomeIcons.instagram,
+          color: CupertinoColors.activeOrange,
+        ),
       ),
     );
   }
