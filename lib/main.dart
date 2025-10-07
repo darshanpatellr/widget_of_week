@@ -15,14 +15,14 @@ import 'widget/reusable_container.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  HomeWidget.registerBackgroundCallback(backgroundCallback);
+  HomeWidget.registerInteractivityCallback(backgroundCallback);
   runApp(const MyApp());
 }
 
 Future<void> backgroundCallback(Uri? uri) async {
   // Called when the widget fires an intent configured to call back to Dart.
   // parse uri and perform action
-  print("backgroundCallback uri : ${uri}");
+  // print("backgroundCallback uri : ${uri}");
   if (uri?.host == 'headlineClicked') {
     // For example: open the app, or log analytics
     debugPrint("Widget headline clicked!");
@@ -161,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget _navigationRail() {
     return ReusableContainer(
-      title: "Navigation Rail",
+      title: "Navigation Rail & Flow icons",
       widget: CupertinoButton.filled(
         child: Text("NavigationRail Screen"),
         onPressed: () {
